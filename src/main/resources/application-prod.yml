@@ -9,4 +9,4 @@ eureka:
     serviceUrl:
       defaultZone: https://ims-discovery-server.herokuapp.com/eureka/
   instance:
-    hostname: herokuapp
+    hostname: ims-discovery-server.herokuapp.com
