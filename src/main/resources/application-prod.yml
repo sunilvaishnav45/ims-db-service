@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: db-service
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: https://ims-discovery-server.herokuapp.com/eureka/
+  instance:
+    hostname: herokuapp
