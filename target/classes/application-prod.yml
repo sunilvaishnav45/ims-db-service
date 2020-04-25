@@ -10,3 +10,6 @@ eureka:
       defaultZone: https://ims-discovery-server.herokuapp.com/eureka/
   instance:
     hostname: ims-discovery-server.herokuapp.com
+    homePageUrl: https://ims-db-service.herokuapp.com/
+    statusPageUrl: https://ims-db-service.herokuapp.com/actuator/info
+    healthCheckUrl: https://ims-db-service.herokuapp.com/actuator/health
