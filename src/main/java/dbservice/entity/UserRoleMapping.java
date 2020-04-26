@@ -18,7 +18,7 @@ public class UserRoleMapping {
 
     @ManyToOne
     @JoinColumn(name = "user")
-    private Role user;
+    private User user;
 
     public int getId() {
         return id;
@@ -36,11 +36,11 @@ public class UserRoleMapping {
         this.role = role;
     }
 
-    public Role getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Role user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }

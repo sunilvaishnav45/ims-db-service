@@ -1,10 +1,11 @@
 package dbservice.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 public class Order {
 
     @Id
@@ -14,6 +15,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "customer")
+    @NotNull
     private Customer customer;
 
     @Column(name = "order_date")
@@ -27,8 +29,8 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "order_status")
+    @NotNull
     private OrderStatus orderStatus;
-
 
     public int getId() {
         return id;

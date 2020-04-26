@@ -19,7 +19,7 @@ public class OrderStatus {
     private String status;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderStatus", cascade = CascadeType.ALL)
-    private Set<Order> attributeValuesSet = new HashSet<Order>();
+    private Set<Order> orderSet = new HashSet<Order>();
 
     public int getId() {
         return id;
@@ -37,11 +37,11 @@ public class OrderStatus {
         this.status = status;
     }
 
-    public Set<Order> getAttributeValuesSet() {
-        return attributeValuesSet;
+    public Set<Order> getOrderSet() {
+        return orderSet;
     }
 
-    public void setAttributeValuesSet(Set<Order> attributeValuesSet) {
-        this.attributeValuesSet = attributeValuesSet;
+    public void setOrderSet(Set<Order> orderSet) {
+        this.orderSet = orderSet;
     }
 }
