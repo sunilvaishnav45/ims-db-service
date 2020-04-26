@@ -7,6 +7,9 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://localhost:8301/eureka/
+      defaultZone: https://ims-discovery-server.herokuapp.com/eureka/
   instance:
-    hostname: localhost
+    hostname: ims-discovery-server.herokuapp.com
+    homePageUrl: http://localhost:8306/
+    statusPageUrl: http://localhost:8306/actuator/info
+    healthCheckUrl: http://localhost:8306/actuator/health
