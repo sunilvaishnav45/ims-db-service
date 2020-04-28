@@ -37,13 +37,7 @@ public class CategoryDaoImpl{
         List<Category> categoryList = null;
         Query query = entityManager.createNativeQuery("select * from category where category= ?",Category.class);
         query.setParameter(1,name);
-        try {
-            categoryList =  query.getResultList();
-        }catch (Exception e){
-            LOGGER.error(e);
-            return Optional.ofNullable(null);
-        }
-        LOGGER.info(categoryList==null);
+        categoryList =  query.getResultList();
         return (categoryList!=null && !categoryList.isEmpty()) ? Optional.ofNullable(categoryList.get(0)) : Optional.ofNullable(null)   ;
     }
 }
