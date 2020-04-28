@@ -72,19 +72,22 @@ public class ProductController {
         Category category = null;
         if(userService.userHasWritePermission(loggedInUser)){
             try{
-                category = JsonUtil.convertFromString(request.getParameterMap().toString(),Category.class).orElseThrow(() -> new InvalidJSONException("JSON is not valid"));
+                String body = JsonUtil.getRequestBody(request);
+                LOGGER.info(body);
+                category = JsonUtil.convertFromString(body,Category.class).orElseThrow(() -> new InvalidJSONException("JSON is not valid"));
             }catch (Exception e){
-                return  new ResponseEntity("Exception while parsing create category request json",HttpStatus.BAD_REQUEST);
+                return new ResponseEntity("Exception while parsing create category request json",HttpStatus.BAD_REQUEST);
             }
-            if(!productService.categoryExists(category.getCategory()))
+            LOGGER.info(productService.categoryExists(category.getCategory()));
+            if(!productService.categoryExists(category.getCategory())){
                 categoryDao.save(category);
-            else
-                new ResponseEntity("Category already exist",HttpStatus.BAD_REQUEST);
-            new ResponseEntity("Category saved successfully",HttpStatus.ACCEPTED);
+            }else{
+               return new ResponseEntity("Category already exist",HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity("Category saved successfully",HttpStatus.ACCEPTED);
         }else{
             throw new AccessDeniedException("User doesn't have write permission");
         }
-        return null;
     }
 
 }

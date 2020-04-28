@@ -1,39 +1,49 @@
 package dbservice.dao.impl;
 
-import dbservice.dao.CategoryDao;
-import dbservice.dao.CommonDao;
 import dbservice.entity.Category;
-import dbservice.entity.Customer;
+import org.hibernate.Session;
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class CategoryDaoImpl extends CommonDaoImpl<Category> implements CategoryDao {
+public class CategoryDaoImpl{
+
+    private static final Logger LOGGER = Logger.getLogger(CategoryDaoImpl.class);
 
     @Autowired
     private EntityManager entityManager;
 
-    @Override
+    public Session getSession(){
+        return entityManager.unwrap(Session.class);
+    }
+
     public Optional<Category> findById(int id) {
         return Optional.ofNullable(getSession().find(Category.class,id));
     }
 
-    @Override
-    public Optional<List<Category>> findAll() {
-        String query =  "Select * from category";
-        List<Category> categories = entityManager.createQuery(query,Category.class).getResultList();
+    public Optional<List<Category>> findAll() {Category category = null;
+        Query query = entityManager.createNativeQuery("select * from category",Category.class);
+        List<Category> categories = query.getResultList();
         return Optional.ofNullable(categories);
     }
 
-    @Override
     public Optional<Category> findByName(String name) {
-        String query = "Select * from category where name='"+name+"'";
-        Category category = entityManager.createQuery(query,Category.class).getSingleResult();
-        return Optional.ofNullable(category);
+        List<Category> categoryList = null;
+        Query query = entityManager.createNativeQuery("select * from category where category= ?",Category.class);
+        query.setParameter(1,name);
+        try {
+            categoryList =  query.getResultList();
+        }catch (Exception e){
+            LOGGER.error(e);
+            return Optional.ofNullable(null);
+        }
+        LOGGER.info(categoryList==null);
+        return (categoryList!=null && !categoryList.isEmpty()) ? Optional.ofNullable(categoryList.get(0)) : Optional.ofNullable(null)   ;
     }
 }
