@@ -24,7 +24,7 @@ public class SwaggerConfig {
                 .build().apiInfo(apiEndPointsInfo());
     }
     private ApiInfo apiEndPointsInfo() {
-        return new ApiInfoBuilder().title("Spring Boot REST API")
+        return new ApiInfoBuilder().title("IMS - DB Service")
                 .description("Inventory Management REST API")
                 .contact(new Contact("Sunil Vaishnav", "https://sunilvaishnav45.github.io/resume/", "sunilvaishnav45@gmail.com"))
                 .license("Apache 2.0")
