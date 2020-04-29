@@ -20,10 +20,12 @@ public class Attributes {
 
     @Column(name = "available", columnDefinition = "tinyint(1) default 1")
     private boolean available;
+/*
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "attributes", cascade = CascadeType.ALL)
     private Set<AttributeValues> attributeValuesSet = new HashSet<AttributeValues>();
 
+*/
 
     public int getId() {
         return id;
@@ -49,11 +51,11 @@ public class Attributes {
         this.available = available;
     }
 
-    public Set<AttributeValues> getUserRoleMappingSet() {
+   /* public Set<AttributeValues> getUserRoleMappingSet() {
         return attributeValuesSet;
     }
 
     public void setUserRoleMappingSet(Set<AttributeValues> userRoleMappingSet) {
         this.attributeValuesSet = userRoleMappingSet;
-    }
+    }*/
 }

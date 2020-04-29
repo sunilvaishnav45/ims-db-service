@@ -1,4 +1,4 @@
-package dbservice.dao.impl;
+package dbservice.dao.custom;
 
 import dbservice.entity.Brand;
 import org.hibernate.Session;
@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class BrandDaoImpl {
+public class BrandCustomDao {
 
     @Autowired
     private EntityManager entityManager;
 
-    private static final Logger LOGGER = Logger.getLogger(BrandDaoImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(BrandCustomDao.class);
 
     public Session getSession(){
         return entityManager.unwrap(Session.class);

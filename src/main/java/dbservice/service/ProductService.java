@@ -1,8 +1,9 @@
 package dbservice.service;
 
-import dbservice.entity.Brand;
-import dbservice.entity.Category;
-import dbservice.entity.Product;
+import dbservice.dto.AttributeValuesResponse;
+import dbservice.entity.*;
+
+import java.util.List;
 
 public interface ProductService {
 
@@ -15,5 +16,13 @@ public interface ProductService {
     public boolean categoryExists(Category category);
 
     public boolean brandExists(Brand brand);
+
+    public boolean attributeExists(String attribute);
+
+    public boolean attributeExists(Attributes attribute);
+
+    public boolean attributeValuesExists(AttributeValues attributeValues);
+
+    public AttributeValuesResponse saveAttributeValue(List<AttributeValues> attributeValuesList);
 
 }

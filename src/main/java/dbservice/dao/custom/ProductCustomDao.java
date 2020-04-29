@@ -1,4 +1,4 @@
-package dbservice.dao.impl;
+package dbservice.dao.custom;
 
 import dbservice.entity.Product;
 import org.hibernate.Session;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class ProductDaoImpl {
+public class ProductCustomDao {
 
     @Autowired
     private EntityManager entityManager;

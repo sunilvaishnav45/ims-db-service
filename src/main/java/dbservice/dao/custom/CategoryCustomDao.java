@@ -1,4 +1,4 @@
-package dbservice.dao.impl;
+package dbservice.dao.custom;
 
 import dbservice.entity.Category;
 import org.hibernate.Session;
@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class CategoryDaoImpl{
+public class CategoryCustomDao {
 
-    private static final Logger LOGGER = Logger.getLogger(CategoryDaoImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(CategoryCustomDao.class);
 
     @Autowired
     private EntityManager entityManager;
