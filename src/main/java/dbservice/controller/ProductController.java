@@ -1,9 +1,9 @@
 package dbservice.controller;
 
 import dbservice.dao.CategoryDao;
-import dbservice.dao.impl.BrandDao;
+import dbservice.dao.BrandDao;
+import dbservice.dao.ProductDao;
 import dbservice.entity.*;
-import dbservice.exceptions.AccessDeniedException;
 import dbservice.exceptions.InvalidJSONException;
 import dbservice.service.ProductService;
 import dbservice.service.UserService;
@@ -12,16 +12,15 @@ import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
+@RequestMapping("/db")
 public class ProductController {
 
     @Autowired
@@ -34,6 +33,9 @@ public class ProductController {
     private BrandDao brandDao;
 
     @Autowired
+    private ProductDao productDao;
+
+    @Autowired
     private ProductService productService;
 
     private static final Logger LOGGER = Logger.getLogger(ProductController.class);
@@ -44,39 +46,20 @@ public class ProductController {
      * @param response
      * @return
      */
-    @PostMapping("/products")
-    public List<Product> getProducts(HttpServletRequest request, HttpServletRequest response){
-        List<Product> fetchedProduct = null;
-
-
-        return Optional.ofNullable(fetchedProduct).orElse(new ArrayList<Product>());
-    }
-
-    /**
-     *
-     * @param request
-     * @param response
-     * @return
-     */
-    @PostMapping("/brand")
-    public ResponseEntity saveUpdateBrand(HttpServletRequest request, HttpServletRequest response) throws Exception{
-        Brand brand = null;
+    @PostMapping(value = "/product", consumes = "application/json")
+    public ResponseEntity<Product> saveProduct(HttpServletRequest request, HttpServletRequest response, @RequestBody Product product) throws  Exception{
         User loggedInUser = null;
-        if(userService.userHasWritePermission(loggedInUser)){
-            String requestBody = JsonUtil.getRequestBody(request);
-            try{
-                brand = JsonUtil.convertFromString(requestBody,Brand.class).orElseThrow(() -> new InvalidJSONException("JSON is not valid"));
-            }catch (InvalidJSONException e){
-                return new ResponseEntity("Exception while parsing create Brand request json",HttpStatus.BAD_REQUEST);
-            }
-            if(!productService.brandExists(brand.getBrand())){
-                brandDao.save(brand);
-                return new ResponseEntity(brand,HttpStatus.ACCEPTED);
-            }else{
-                return new ResponseEntity("Brand already exist",HttpStatus.BAD_REQUEST);
-            }
+        if(!userService.userHasWritePermission(loggedInUser))
+            return new ResponseEntity("User doesn't has write permission",HttpStatus.FORBIDDEN);
+        if(!productService.productExists(product)){
+            if(!productService.categoryExists(product.getCategory()))
+                return new ResponseEntity("Category doesn't exist",HttpStatus.BAD_REQUEST);
+            if(!productService.brandExists(product.getBrand()))
+                return new ResponseEntity("Brand doesn't exist",HttpStatus.BAD_REQUEST);
+            productDao.save(product);
+            return new ResponseEntity(product,HttpStatus.ACCEPTED);
         }else{
-            return new ResponseEntity("User doesn't have write permission",HttpStatus.FORBIDDEN);
+            return new ResponseEntity("Product already exist",HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -86,26 +69,35 @@ public class ProductController {
      * @param response
      * @return
      */
-    @PostMapping("/category")
-    public ResponseEntity saveUpdateCategory(HttpServletRequest request, HttpServletRequest response) throws  Exception{
+    @PostMapping(value = "/brand", consumes = "application/json")
+    public ResponseEntity<Brand> saveBrand(HttpServletRequest request, HttpServletRequest response,@RequestBody Brand brand){
         User loggedInUser = null;
-        Category category = null;
-        if(userService.userHasWritePermission(loggedInUser)){
-            try{
-                String body = JsonUtil.getRequestBody(request);
-                category = JsonUtil.convertFromString(body,Category.class).orElseThrow(() -> new InvalidJSONException("JSON is not valid"));
-            }catch (Exception e){
-                return new ResponseEntity("Exception while parsing create category request json",HttpStatus.BAD_REQUEST);
-            }
-            if(!productService.categoryExists(category.getCategory())){
-                categoryDao.save(category);
-            }else{
-               return new ResponseEntity("Category already exist",HttpStatus.BAD_REQUEST);
-            }
-            return new ResponseEntity("Category saved successfully",HttpStatus.ACCEPTED);
-        }else{
-            return new ResponseEntity("User doesn't have write permission",HttpStatus.FORBIDDEN);
+        if(!userService.userHasWritePermission(loggedInUser))
+            return new ResponseEntity("User doesn't has write permission",HttpStatus.FORBIDDEN);
+        if (!productService.brandExists(brand.getBrand())) {
+            brandDao.save(brand);
+            return new ResponseEntity(brand, HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity("Brand already exist", HttpStatus.BAD_REQUEST);
         }
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    @PostMapping(value = "/category", consumes = "application/json")
+    public ResponseEntity<Category> saveCategory(HttpServletRequest request, HttpServletRequest response, @RequestBody Category category) throws  Exception {
+        User loggedInUser = null;
+        if (!userService.userHasWritePermission(loggedInUser))
+            return new ResponseEntity("User doesn't has write permission", HttpStatus.FORBIDDEN);
+        if (!productService.categoryExists(category.getCategory())) {
+            categoryDao.save(category);
+            return new ResponseEntity(category, HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity("Category already exist", HttpStatus.BAD_REQUEST);
+        }
+    }
 }

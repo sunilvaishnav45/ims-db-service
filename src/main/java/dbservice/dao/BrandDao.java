@@ -1,4 +1,4 @@
-package dbservice.dao.impl;
+package dbservice.dao;
 
 import dbservice.entity.Brand;
 import org.springframework.data.repository.CrudRepository;

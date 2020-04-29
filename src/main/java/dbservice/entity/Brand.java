@@ -21,8 +21,8 @@ public class Brand {
     @Column(name = "available", columnDefinition = "tinyint(1) default 1")
     private boolean available;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "brand", cascade = CascadeType.ALL)
-    private Set<Product> productSet = new HashSet<Product>();
+   /* @OneToMany(fetch = FetchType.LAZY, mappedBy = "brand", cascade = CascadeType.ALL)
+    private Set<Product> productSet = new HashSet<Product>();*/
 
     public int getId() {
         return id;
@@ -48,11 +48,11 @@ public class Brand {
         this.available = available;
     }
 
-    public Set<Product> getProductSet() {
+   /* public Set<Product> getProductSet() {
         return productSet;
     }
 
     public void setProductSet(Set<Product> productSet) {
         this.productSet = productSet;
-    }
+    }*/
 }

@@ -43,8 +43,8 @@ public class Product {
     @Column(name = "available", columnDefinition = "tinyint(1) default 1")
     private  boolean available;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
-    private Set<ProductAttributeValueMapping> productAttributeValueMappingSet = new HashSet<ProductAttributeValueMapping>();
+   /* @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<ProductAttributeValueMapping> productAttributeValueMappingSet = new HashSet<ProductAttributeValueMapping>();*/
 
     public int getId() {
         return id;
@@ -118,11 +118,11 @@ public class Product {
         this.available = available;
     }
 
-    public Set<ProductAttributeValueMapping> getProductAttributeValueMappingSet() {
+   /* public Set<ProductAttributeValueMapping> getProductAttributeValueMappingSet() {
         return productAttributeValueMappingSet;
     }
 
     public void setProductAttributeValueMappingSet(Set<ProductAttributeValueMapping> productAttributeValueMappingSet) {
         this.productAttributeValueMappingSet = productAttributeValueMappingSet;
-    }
+    }*/
 }
